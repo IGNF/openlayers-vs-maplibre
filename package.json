@@ -1,8 +1,9 @@
 {
-  "name": "webpack-maplibre",
+  "name": "webpack-demo",
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
+  "homepage": "https://ocruze.github.io/webpack-demo",
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch",

@@ -1,5 +1,4 @@
 # webpack-demo
----
 
 ## Scripts yarn/npm :
 
