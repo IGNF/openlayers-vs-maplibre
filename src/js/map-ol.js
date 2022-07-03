@@ -15,7 +15,7 @@ const map = new Map({
   target: 'map-ol',
   view: new View({
     maxZoom: 18,
-    center: [-244780.24508882355, 5986452.183179816],
-    zoom: 15,
+    center: [451108, 6012848],
+    zoom: 5,
   }),
 });
