@@ -4,6 +4,7 @@
 
 ### Générer un build
 ```
+yarn build-dev
 yarn build
 ```
 
@@ -14,5 +15,5 @@ yarn build:watch
 
 ### Lancer le serveur de développement (indépendant du build)
 ```
-yarn dev
+yarn start
 ```
