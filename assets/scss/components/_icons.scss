@@ -1,0 +1,15 @@
+// Custom icons (not included in Design System
+[class*="icons-"]:before {
+    display: inline-flex;
+}
+
+// Icons for tiles depending on status
+.icons-tiles:before {
+    content: url("../img/icons/tiles.svg");
+    transform: scale(1.2);
+}
+
+.icons-voir:before {
+    content: url("../img/icons/Voir@2x.png");
+    transform: scale(0.5);
+}
