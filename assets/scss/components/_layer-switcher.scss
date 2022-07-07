@@ -1,0 +1,42 @@
+.layer-switcher {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 200px;
+    background: transparent;
+    pointer-events: auto;
+
+    .layer-switcher-control {
+        display: block;
+        background-color: rgba(255,255,255,0.7);
+        margin-left: auto;
+        margin-right: 0;
+        padding: 0;
+    }
+
+    .layer-switcher-sources {
+        display: none;
+        list-style: none;
+        padding: 0.5rem;
+        background-color: white;
+        border: 1px solid #6c757d;
+        border-radius: .25rem;
+
+        .layer-switcher-source label span {
+            position: relative;
+            left: 0.5rem;
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .layer-switcher-layers {
+            list-style: none;
+            padding-left: 1rem;
+            label span {
+                font-size: inherit;
+                font-weight: normal;
+            }
+        }
+    } 
+}
+ 
