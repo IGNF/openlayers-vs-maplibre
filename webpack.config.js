@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
 const { env } = require('process');
 
@@ -25,22 +26,23 @@ let config = {
             title: 'Map OpenLayers',
             template: './src/map-ol.html',
             filename: "map-ol.html",
-            chunks: ['app','map-ol']
+            chunks: ['app', 'map-ol']
         }),
         new HtmlWebpackPlugin({
             title: 'Map Maplibre',
             template: './src/map-maplibre.html',
             filename: "map-maplibre.html",
-            chunks: ['app','map-maplibre']
+            chunks: ['app', 'map-maplibre']
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
-        })
+        }),
+        new MiniCssExtractPlugin()
     ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, './dist'), // docs because github pages
+        path: path.resolve(__dirname, './docs'), // docs because github pages
         clean: true,
     },
     module: {
@@ -50,12 +52,16 @@ let config = {
             use: ['babel-loader']
         },
         {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
+            test: /\.(sa|sc|c)ss$/,
+            use: [
+                env.dev ? "style-loader" : MiniCssExtractPlugin.loader,
+                "css-loader",
+                "sass-loader",
+            ],
         },
-        { 
-            test: /\.scss?$/i, 
-            use: ['style-loader','css-loader', 'sass-loader'],
+        {
+            test: /\.(png|svg|jpg|jpeg|gif)$/i,
+            type: 'asset/resource',
         }]
     },
     resolve: {
@@ -69,10 +75,10 @@ let config = {
 };
 
 module.exports = (env) => {
-    console.log(env.dev)
-    if (! env.dev) {
+    console.log(`Mode dev : ${env.dev}`)
+    if (!env.dev) {
         config.plugins.push(new TerserPlugin());
         config.devtool = 'eval-cheap-module-source-map';
     }
-    return config;   
+    return config;
 }
