@@ -52,9 +52,16 @@ let config = {
             use: ['babel-loader']
         },
         {
-            test: /\.(sa|sc|c)ss$/,
+            test: /\.css$/i,
             use: [
                 env.dev ? "style-loader" : MiniCssExtractPlugin.loader,
+                'css-loader'
+            ],
+        },
+        {
+            test: /\.(sa|sc)ss$/,
+            use: [
+                "style-loader",
                 "css-loader",
                 "sass-loader",
             ],
