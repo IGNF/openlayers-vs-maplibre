@@ -42,7 +42,7 @@ let config = {
     ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, './docs'), // docs because github pages
+        path: path.resolve(__dirname, './dist'),
         clean: true,
     },
     module: {
