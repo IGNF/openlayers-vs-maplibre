@@ -21,6 +21,7 @@ import GetFeatureInfo from "geoportal-extensions-openlayers/src/OpenLayers/Contr
 import ScaleLine from 'ol/control/ScaleLine';
 import DEFAULT_OPTIONS from '../defaults';
 import { Wait } from '../../utils';
+import { applyStyle } from 'ol-mapbox-style';
 
 
 /**
@@ -68,7 +69,9 @@ export default class MapOlExt extends Map {
         this.on('backgroundlayeradded', () => {
             this._wait.show("Chargement des tuiles vecteurs du PCI");
 
-            this.addPCI().then(informations => {
+            this.addPCI().then(result => {
+                let informations = result.informations;
+
                 let layer = new VectorTileLayer({
                     minZoom: informations.minzoom,
                     maxZoom: informations.maxzoom,
@@ -83,6 +86,7 @@ export default class MapOlExt extends Map {
                     title: informations.title,
                     description: informations.description,
                 });
+                applyStyle(layer, result.style, 'pci');
                 
                 let control = new GetFeatureInfo({
                     options: { auto: true, hidden: true },
@@ -149,7 +153,22 @@ export default class MapOlExt extends Map {
         response  = await response.json();
         
         informations = Object.assign(informations, response);
-        return Promise.resolve(informations);
+
+        // Le style
+        response = await fetch('https://wxs.ign.fr/static/vectorTiles/styles/PCI/pci.json');
+        
+        let style = await response.json();
+        style.glyphs = 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf';
+        style.layers.forEach(layer => {
+            if ('layout' in layer && 'text-font' in layer.layout) {
+                layer.layout['text-font'] = ["Open Sans Bold Italic"];
+            }
+        });
+
+        return Promise.resolve({
+            informations: informations,
+            style: style 
+        });
     }
 
     /**

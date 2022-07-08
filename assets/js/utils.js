@@ -49,6 +49,35 @@ export const guid = function () {
     return s.replace(/[\u0300-\u036f]/g, "");
 };
 
+/**
+ * Extension de la classe Set pour filter les eventuels doublons
+ * On considere l'egalite de maniere superficielle (shallow equality)
+ */
+export class SetExt extends Set {
+    add (o) {
+        for (let i of this)
+            if (this.compare(o, i))
+                return this;
+      
+        super.add.call(this, o);
+        return this;
+    };
+  
+    compare(o, i) {
+        const keys1 = Object.keys(o);
+        const keys2 = Object.keys(i);
+        if (keys1.length !== keys2.length) {
+            return false;
+        }
+        for (let key of keys1) {
+            if (o[key] !== i[key]) {
+                return false;
+            }
+        }
+        return true;
+    }
+  }
+
 
 /**
  * Affichage d'une patience sur la div dont l'id est id. Si id n'est pas defini => body

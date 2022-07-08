@@ -5,7 +5,7 @@ import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import { LayerSwitcherControl } from './layer-switcher-control';
 import search from './search';
 import DEFAULT_OPTIONS from '../defaults';
-import { Wait } from '../../utils';
+import { SetExt, Wait } from '../../utils';
 
 
 export class MapLibreExt extends Map {
@@ -59,32 +59,48 @@ export class MapLibreExt extends Map {
                 this.addSource(id, source);
             }
             
+            // Ajout des styles
             result.layers.forEach(layer => {
                 this.addLayer(layer);
-                
-                this.on('mouseenter', layer.id, () => {
-                    this.getCanvas().style.cursor = 'pointer';
-                });
-                        
-                // Change it back to a pointer when it leaves.
-                this.on('mouseleave', layer.id, () => {
-                    this.getCanvas().style.cursor = '';
-                });
-
-                this.on('click', layer.id, (e) => {
-                    let form = this.createForm(e.features[0]);
-                    new Popup()
-                        .setLngLat(e.lngLat)
-                        .setHTML(form.outerHTML)
-                        .addTo(this);
-                });
             })
+
+            this.on('mousemove',(e) => {
+                const features = this.queryRenderedFeatures(e.point);
+                this.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+            });
+            this.on('click', this.onClick);
+
             this.addControl(new LayerSwitcherControl());
             this._wait.hide();
         }).catch(err => {
             console.log(err.message);
             this._wait.hide();
         })
+    }
+
+    onClick(e) {
+        const features = this.queryRenderedFeatures(e.point);
+        if (features.length === 1) {
+            let form = this.createForm(this.getFingerprint(features[0]));
+            new Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(form.outerHTML)
+                .addTo(this); 
+                return;   
+        }
+
+        let fingerprints = new SetExt();
+        features.forEach(feature => {
+            fingerprints.add(this.getFingerprint(feature));
+        });
+
+        for (let fp of fingerprints) {
+            let form = this.createForm(fp);
+            new Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(form.outerHTML)
+                .addTo(this);       
+        }
     }
 
     /**
@@ -111,14 +127,22 @@ export class MapLibreExt extends Map {
         return Promise.resolve(result);
     }
 
+    getFingerprint(feature) {
+        return Object.assign({}, feature.properties, { 
+            source: feature.source, 
+            sourceLayer: feature.sourceLayer 
+        });
+    }
+
     /**
      * Creation du formulaire d'un feature
      * @param Object feature 
      * @returns 
      */
     createForm(feature) {
-        let properties = feature.properties;
-        let layer = feature.layer.id;
+        let unused = ['source', 'sourceLayer'];
+
+        let layer = feature.sourceLayer;
 
         let table = document.createElement('table');
         let tbody = document.createElement('tbody');
@@ -133,7 +157,11 @@ export class MapLibreExt extends Map {
         tr.append(td);
         tbody.append(tr);
 
-        for (const [name, value] of Object.entries(properties)) {
+        for (const [name, value] of Object.entries(feature)) {
+            if (unused.includes(name)) {
+                continue;
+            }
+
             let tr = document.createElement('tr');
 
             let td = document.createElement('td');
