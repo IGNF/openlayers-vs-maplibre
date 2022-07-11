@@ -11,6 +11,7 @@ import { SetExt, Wait } from '../../utils';
 export class MapLibreExt extends Map {
     constructor(container) {
         let options = Object.assign({ container: container }, DEFAULT_OPTIONS);
+        options.zoom--; // ?????? Decalage avec les zooms d'openlayers
         super(options);
 
         this._wait = new Wait({ id: container });

@@ -52,6 +52,7 @@ export const guid = function () {
 /**
  * Extension de la classe Set pour filter les eventuels doublons
  * On considere l'egalite de maniere superficielle (shallow equality)
+ * A n'utiliser que pour les set d'objets
  */
 export class SetExt extends Set {
     add (o) {
