@@ -76,14 +76,14 @@ export class MapLibreExt extends Map {
         }).catch(err => {
             console.log(err.message);
             this._wait.hide();
-        })
+        });
     }
 
     onClick(e) {
         const features = this.queryRenderedFeatures(e.point);
         if (features.length === 1) {
             let form = this.createForm(this.getFingerprint(features[0]));
-            new Popup()
+            new Popup({ maxWidth: 'none' })
                 .setLngLat(e.lngLat)
                 .setHTML(form.outerHTML)
                 .addTo(this); 
@@ -97,7 +97,7 @@ export class MapLibreExt extends Map {
 
         for (let fp of fingerprints) {
             let form = this.createForm(fp);
-            new Popup()
+            new Popup({ maxWidth: 'none' })
                 .setLngLat(e.lngLat)
                 .setHTML(form.outerHTML)
                 .addTo(this);       
