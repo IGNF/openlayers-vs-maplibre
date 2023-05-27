@@ -32,6 +32,12 @@
   will-change: contents, width;
   transition: all 0.25s;
 }
+.ol-scale-singlebar-even{
+  background-color: #000000;
+}
+.ol-scale-singlebar-odd{
+  background-color: #ffffff;
+}
 .ol-scale-bar {
   position: absolute;
   bottom: 8px;
@@ -42,13 +48,13 @@
   height: 15px;
   background-color: #000000;
   float: right;
-  z-Index: 10;
+  z-index: 10;
 }
 .ol-scale-step-text {
   position: absolute;
   bottom: -5px;
   font-size: 12px;
-  z-Index: 11;
+  z-index: 11;
   color: #000000;
   text-shadow: -2px 0 #FFFFFF, 0 2px #FFFFFF, 2px 0 #FFFFFF, 0 -2px #FFFFFF;
 }
@@ -63,7 +69,7 @@
 .ol-scale-singlebar {
   position: relative;
   height: 10px;
-  z-Index: 9;
+  z-index: 9;
   box-sizing: border-box;
   border: 1px solid black;
 }
@@ -78,6 +84,9 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.ol-viewport canvas {
+  all: unset;
 }
 .ol-selectable {
   -webkit-touch-callout: default;
