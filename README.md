@@ -1,5 +1,7 @@
 # openlayers-vs-maplibre
 
+> :warning: Ce démonstrateur n'est plus activement maintenu
+
 Ce démonstrateur compare les possibilités des bibliothèques **OpenLayers** ([openlayers/openlayers](https://github.com/openlayers/openlayers)) et **MapLibre** ([maplibre/maplibre-gl-js](https://github.com/maplibre/maplibre-gl-js)) pour la visualisation de couches de tuiles raster (WMTS) et de tuiles vectorielles dans une interface cartographique incluant quelques fonctionnalités de navigation et de recherche.
 
 ## Contexte
